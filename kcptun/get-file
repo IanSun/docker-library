@@ -1,0 +1,37 @@
+#!/bin/sh
+
+RELEASE_URL_PREFIX="https://github.com/xtaci/kcptun/releases/download"
+
+get_hardware_name () {
+  case $(uname -m) in
+    "x86_64")
+      echo "amd64"
+      ;;
+    "aarch64")
+      echo "arm64"
+      ;;
+    *)
+  esac
+}
+
+get_kernel_name () {
+  case $(uname -s) in
+    "Darwin")
+      echo "darwin"
+      ;;
+    "Linux")
+      echo "linux"
+      ;;
+    *)
+  esac
+}
+
+get_release_url () {
+  curl -L "$RELEASE_URL_PREFIX/v$1/kcptun-$(get_kernel_name)-$(get_hardware_name)-$1.tar.gz"
+}
+
+main () {
+  get_release_url "$@"
+}
+
+main "$@"
